@@ -7,6 +7,7 @@ from ckan.plugins.toolkit import Invalid
 from ckan.lib.base import BaseController
 from ckan.common import json, response, request
 import ckanext.stats.stats as stats_lib
+import ckan.lib.formatters as formatters
 import ckan.lib.helpers as core_helpers
 import ckan.model as model
 import os
@@ -56,7 +57,8 @@ class StatsApi(BaseController):
     def organization_count(self):
         response.content_type = 'application/json; charset=UTF-8'
         count = len(logic.get_action('organization_list')({}, {}))
-        data = {"organization_count" : count}
+        # changes '000' to 'k' for numbers greater than 1000
+        data = {"organization_count" : formatters.localised_SI_number(count)}
         return json.dumps(data)
 
     def top_tags(self):
