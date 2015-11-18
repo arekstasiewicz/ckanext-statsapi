@@ -28,18 +28,33 @@ class StatsapiPlugin(plugins.SingletonPlugin):
     # IRoutes
     @staticmethod
     def after_map(m):
-         m.connect('getschema', '/api/3/stats/dataset_count',
+         m.connect('datasetcount', '/api/3/stats/dataset_count',
             controller='ckanext.statsapi.plugin:StatsApi', action='dataset_count')
-         m.connect('getschema', '/api/3/stats/group_count',
-            controller='ckanext.statsapi.plugin:StatsApi', action='group_count')            
-         m.connect('getschema', '/api/3/stats/organization_count',
+
+         m.connect('groupcount', '/api/3/stats/group_count',
+            controller='ckanext.statsapi.plugin:StatsApi', action='group_count') 
+
+         m.connect('organizationcount', '/api/3/stats/organization_count',
             controller='ckanext.statsapi.plugin:StatsApi', action='organization_count')
-         m.connect('getschema', '/api/3/stats/top_tags',
-            controller='ckanext.statsapi.plugin:StatsApi', action='top_tags')
-         m.connect('getschema', '/api/3/stats/top_tags',
+
+         m.connect('topratedpackages', '/api/3/stats/top_rated_packages',
+            controller='ckanext.statsapi.plugin:StatsApi', action='top_rated_packages')
+
+         m.connect('mosteditedpackages', '/api/3/stats/most_edited_packages',
             controller='ckanext.statsapi.plugin:StatsApi', action='most_edited_packages')
+
+         m.connect('largestgroups', '/api/3/stats/largest_groups',
+            controller='ckanext.statsapi.plugin:StatsApi', action='largest_groups')
+
+         m.connect('toptags', '/api/3/stats/top_tags',
+            controller='ckanext.statsapi.plugin:StatsApi', action='top_tags')
+
+         m.connect('toppackagecreators', '/api/3/stats/top_package_creators',
+            controller='ckanext.statsapi.plugin:StatsApi', action='top_package_creators')
+
          return m
 
+        
 class StatsApi(BaseController):
 
     def dataset_count(self):
@@ -61,25 +76,36 @@ class StatsApi(BaseController):
         data = {"organization_count" : formatters.localised_SI_number(count)}
         return json.dumps(data)
 
-    def top_tags(self):
+
+
+
+    def top_rated_packages(self):
         response.content_type = 'application/json; charset=UTF-8'
-        data = {"top_tags" : count}
+        count = 0
+        data = {"top_rated_packages" : count}
         return json.dumps(data)
 
     def most_edited_packages(self):
         response.content_type = 'application/json; charset=UTF-8'
+        count = 0
         data = {"most_edited_packages" : count}
         return json.dumps(data)
 
     def largest_groups(self):
         response.content_type = 'application/json; charset=UTF-8'
+        count = 0
         data = {"largest_groups" : count}
+        return json.dumps(data)
+
+    def top_tags(self):
+        response.content_type = 'application/json; charset=UTF-8'
+        count = 0
+        data = {"top_tags" : count}
         return json.dumps(data)
 
     def top_package_creators(self):
         response.content_type = 'application/json; charset=UTF-8'
+        count = 0
         data = {"top_package_creators" : count}
         return json.dumps(data)
-
-
 
