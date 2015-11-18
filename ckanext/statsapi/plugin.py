@@ -12,6 +12,8 @@ import ckan.lib.helpers as core_helpers
 import ckan.model as model
 import os
 
+import pprint
+
 log = getLogger(__name__)
 
 class StatsapiPlugin(plugins.SingletonPlugin):
@@ -54,7 +56,6 @@ class StatsapiPlugin(plugins.SingletonPlugin):
 
          return m
 
-        
 class StatsApi(BaseController):
 
     def dataset_count(self):
@@ -78,34 +79,42 @@ class StatsApi(BaseController):
 
 
 
-
     def top_rated_packages(self):
         response.content_type = 'application/json; charset=UTF-8'
-        count = 0
-        data = {"top_rated_packages" : count}
+#        stats = stats_lib.Stats()
+#        top_rated_packages = stats.top_rated_packages()
+        data = {"top_rated_packages" : {}}
         return json.dumps(data)
 
     def most_edited_packages(self):
         response.content_type = 'application/json; charset=UTF-8'
-        count = 0
-        data = {"most_edited_packages" : count}
+#        stats = stats_lib.Stats()
+#        most_edited_packages = stats.most_edited_packages()
+        data = {"most_edited_packages" : {}}
         return json.dumps(data)
 
     def largest_groups(self):
         response.content_type = 'application/json; charset=UTF-8'
-        count = 0
-        data = {"largest_groups" : count}
+#        stats = stats_lib.Stats()
+#        largest_groups = stats.largest_groups()
+        data = {"largest_groups" : {}}
         return json.dumps(data)
 
     def top_tags(self):
         response.content_type = 'application/json; charset=UTF-8'
-        count = 0
-        data = {"top_tags" : count}
+        stats = stats_lib.Stats()
+        top_tags = stats.top_tags()
+
+        data = {}
+        for tag, num_packages in top_tags:
+           data[tag.name] =  str(num_packages)
+
+        data = {"top_tags" : json.dumps(data, ensure_ascii=False)}
         return json.dumps(data)
 
     def top_package_creators(self):
         response.content_type = 'application/json; charset=UTF-8'
-        count = 0
-        data = {"top_package_creators" : count}
+#        stats = stats_lib.Stats()
+#        top_package_creators = stats.top_package_creators()
+        data = {"top_package_creators" : {}}
         return json.dumps(data)
-
